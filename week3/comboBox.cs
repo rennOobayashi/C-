@@ -455,5 +455,40 @@ namespace Week03Proj01
             lblResult.Text = $"{iceOption}{cmbBeverage.SelectedItem}: " +
                              $"{price + icePrice}";
         }
+
+        private void btnProcess08_Click(object sender, EventArgs e)
+        {
+            if (cmbBeverage.SelectedIndex < 0)
+            {
+                MessageBox.Show("음료를 선택해주세요.");
+                return;
+            }
+
+            //Items(리스트)의 크기는 상수가 아니기에 에러발생
+            //var prices = new int[cmbBeverage.Items.Count]
+            var prices = new int[]
+            {
+                1500,
+                2000,
+                3000
+            };
+
+            int price = 0;
+            if (cmbBeverage.SelectedIndex < prices.Length)
+            {
+                price = prices[cmbBeverage.SelectedIndex];
+            }
+            else
+            {
+                MessageBox.Show("아직 가격이 정해지지 않았습니다.");
+                return;
+            }
+
+            var iceOption = chkIce.Checked ? "아이스" : "";
+            var icePrice = chkIce.Checked ? 500 : 0;
+
+            lblResult.Text = $"{iceOption}{cmbBeverage.SelectedItem}: " +
+                             $"{price + icePrice}";
+        }
     }
 }
