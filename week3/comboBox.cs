@@ -427,5 +427,33 @@ namespace Week03Proj01
             lblResult.Text = $"{iceOption}{cmbBeverage.SelectedItem}: " +
                              $"{price + icePrice}";
         }
+
+        private void btnProcess07_Click(object sender, EventArgs e)
+        {
+            if (cmbBeverage.SelectedIndex < 0)
+            {
+                MessageBox.Show("음료를 선택해주세요.");
+                return;
+            }
+
+            int price = 0;
+
+            switch (cmbBeverage.SelectedIndex)
+            {
+                case 0: price = 1500;
+                    break;
+                case 1: price = 2000;
+                    break;
+                case 2: price = 3000;
+                    break;
+                default: return;
+            }
+
+            var iceOption = chkIce.Checked ? "아이스" : "";
+            var icePrice = chkIce.Checked ? 500 : 0;
+
+            lblResult.Text = $"{iceOption}{cmbBeverage.SelectedItem}: " +
+                             $"{price + icePrice}";
+        }
     }
 }
