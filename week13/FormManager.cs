@@ -452,7 +452,7 @@ namespace Week09Homework
 
                 foreach (var stu in students)
                 {
-                    if (stu.Value.AdvisorNumber == target.Number)
+                    if (stu.Value.Advisor == target)
                     {
                         MessageBox.Show("누군가의 지도 교수입니다.");
                         return;
@@ -624,9 +624,9 @@ namespace Week09Homework
             }
 
             if (cmbAdvisor.SelectedIndex < 0) {
-                student.AdvisorNumber = null;
+                student.Advisor = null;
             } else {
-                student.AdvisorNumber = (cmbAdvisor.SelectedItem as Professor).Number;
+                student.Advisor = (cmbAdvisor.SelectedItem as Professor);
             }
 
             if (cmbYear.SelectedIndex < (int)YEAR.END) {
@@ -727,9 +727,9 @@ namespace Week09Homework
             }
 
             if (cmbAdvisor.SelectedIndex < 0) {
-                selectedStudent.AdvisorNumber = null;
+                selectedStudent.Advisor = null;
             } else {
-                selectedStudent.AdvisorNumber = (cmbAdvisor.SelectedItem as Professor).Number;
+                selectedStudent.Advisor = (cmbAdvisor.SelectedItem as Professor);
             }
 
             selectedStudent.Year = (YEAR)year;
@@ -793,7 +793,7 @@ namespace Week09Homework
             }
 
             for (int i = 0; i < cmbAdvisor.Items.Count; i++) {
-                if ((cmbAdvisor.Items[i] as Professor).Number == student.AdvisorNumber) {
+                if ((cmbAdvisor.Items[i] as Professor) == student.Advisor) {
                     cmbAdvisor.SelectedIndex = i;
                     break;
                 }
