@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -252,24 +252,6 @@ namespace Week09Homework
             
         }
 
-        private void SaveInfo(Department dept, string fileName)
-        {
-            try
-            {
-                using (var fs = new FileStream(fileName, FileMode.Append))
-                {
-                    using (var sw = new StreamWriter(fs))
-                    {
-                        sw.WriteLine(dept.Record);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
         private void btnRemoveDepartment_Click(object sender, EventArgs e)
         {
             if (lbxDepartment.SelectedIndex < 0) {
@@ -440,7 +422,7 @@ namespace Week09Homework
             SaveInfo(professor, ProfessorFullFileName);
         }
 
-        private void SaveInfo(Professor professor, string fileName)
+        private void SaveInfo(IFile file, string fileName)
         {
             try
             {
@@ -448,7 +430,7 @@ namespace Week09Homework
                 {
                     using (var sw = new StreamWriter(fs))
                     {
-                        sw.WriteLine(professor.Record);
+                        sw.WriteLine(file.Record);
                     }
                 }
             }
@@ -670,24 +652,6 @@ namespace Week09Homework
             lbxDictionary.Items.Add(student);
 
             SaveInfo(student, StudentFullFileName);
-        }
-
-        private void SaveInfo(Student student, string fileName)
-        {
-            try
-            {
-                using (var fs = new FileStream(fileName, FileMode.Append))
-                {
-                    using (var sw = new StreamWriter(fs))
-                    {
-                        sw.WriteLine(student.Record);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
         }
 
         private void UpdateStudent()
