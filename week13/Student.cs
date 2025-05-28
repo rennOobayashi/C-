@@ -62,7 +62,7 @@ namespace Week09Homework
             BirthInfo = new DateTime(year, month, day);
         }
         //public string DepartmentCode { get; set; }
-        public string AdvisorNumber { get; set; }
+        public Professor Advisor { get; set; }
         public YEAR Year { get; set; }
         public CLASS Class { get; set; }
         public REG_STATUS RegStatus { get; set; }
@@ -88,10 +88,10 @@ namespace Week09Homework
 
         public string Record
         {
-            get { return $"{Number}|{Name}|{Dept.Code}|{BirthInfo:yyyy.MM.dd}|{AdvisorNumber}|{Year}|{(int)Class}|{(int)RegStatus}|{Address}|{Contact}"; }
+            get { return $"{Number}|{Name}|{Dept.Code}|{BirthInfo:yyyy.MM.dd}|{Advisor.Number}|{Year}|{(int)Class}|{(int)RegStatus}|{Address}|{Contact}"; }
         }
 
-        public static Student Restore(string record, Department[] depts)
+        public static Student Restore(string record, Department[] depts, List<Professor> profs)
         {
             Student stu = null;
 
@@ -123,7 +123,8 @@ namespace Week09Homework
                         }
                     }
                     //4 지도교수
-                    stu.AdvisorNumber = sdatas[4];
+                    var prof = depts.FirstOrDefault(m => m != null && m.Number == sdatas[4]);
+                    stu.Advisor = prof;
                     //5 학년
                     if (Enum.TryParse<YEAR>(sdatas[5], out var year))
                     {
