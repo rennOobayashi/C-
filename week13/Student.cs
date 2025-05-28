@@ -35,7 +35,7 @@ namespace Week09Homework
         END,
     }
 
-    class Student : Member
+    class Student : Member, IFile
     {
         //static 필드
         public static Dictionary<YEAR, string> YearName
