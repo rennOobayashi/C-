@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Week09Homework
 {
-    class Professor : Member
+    class Professor : Member, IFile
     {
         //public string DepartmentCode { get; set; }
 
