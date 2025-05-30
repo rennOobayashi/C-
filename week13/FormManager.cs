@@ -10,9 +10,11 @@ namespace Week09Homework
     {
         public string PATH
         {
-            get {
+            get
+            {
                 var path = "c:\\class_c";
-                if (false == Directory.Exists(path)) {
+                if (false == Directory.Exists(path))
+                {
                     Directory.CreateDirectory(path);
                 }
                 return path;
@@ -22,7 +24,8 @@ namespace Week09Homework
         //static도 문제 없음
         public string DepartmentFullFileName
         {
-            get {
+            get
+            {
                 return Path.Combine(PATH, "department.txt");
             }
         }
@@ -60,14 +63,16 @@ namespace Week09Homework
             //professors = new List<Professor>();
             students = new Dictionary<string, Student>();
 
-            for (int i = 0; i < (int)YEAR.END; i++) {
+            for (int i = 0; i < (int)YEAR.END; i++)
+            {
                 cmbYear.Items.Add(Student.YearName[(YEAR)i]);
             }
 
             cmbClass.Items
                 .AddRange(new object[] { CLASS.A, CLASS.B, CLASS.C });
 
-            for (int i = 0; i < (int)REG_STATUS.END; i++) {
+            for (int i = 0; i < (int)REG_STATUS.END; i++)
+            {
                 cmbRegStatus.Items.Add(Student.RegStatusName[(REG_STATUS)i]);
             }
 
@@ -85,8 +90,8 @@ namespace Week09Homework
             };
 
             OpenInfo(ref departments, DepartmentFullFileName);
-            OpenInfo(ref professors, DepartmentFullFileName);
-            OpenInfo(ref students, DepartmentFullFileName);
+            OpenInfo(ref professors, ProfessorFullFileName);
+            OpenInfo(ref students, StudentFullFileName);
         }
 
         private void OpenInfo(ref Department[] departments, string fileName)
@@ -132,7 +137,8 @@ namespace Week09Homework
             if (professors == null)
             {
                 professors = new List<Professor>();
-            } else
+            }
+            else
             {
                 professors.Clear();
             }
@@ -189,7 +195,7 @@ namespace Week09Homework
                             while (false == sr.EndOfStream)
                             {
                                 var data = sr.ReadLine();
-                                var stu = Student.Restore(data, departments);
+                                var stu = Student.ReStore(data, departments, professors);
 
                                 if (stu != null)
                                 {
@@ -209,27 +215,35 @@ namespace Week09Homework
 
         private void btnRegisterDepartment_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(tbxDepartmentCode.Text)) {
+            if (string.IsNullOrEmpty(tbxDepartmentCode.Text))
+            {
                 MessageBox.Show("학과코드 입력");
                 tbxDepartmentCode.Focus();
                 return;
             }
 
-            if (string.IsNullOrEmpty(tbxDepartmentName.Text)) {
+            if (string.IsNullOrEmpty(tbxDepartmentName.Text))
+            {
                 MessageBox.Show("학과이름 입력");
                 tbxDepartmentName.Focus();
                 return;
             }
 
             int index = -1;
-            for (int i = 0; i < departments.Length; i++) {
-                if (departments[i] == null) {
-                    if (index < 0) {
+            for (int i = 0; i < departments.Length; i++)
+            {
+                if (departments[i] == null)
+                {
+                    if (index < 0)
+                    {
                         index = i;
                     }
                     //break;
-                } else {
-                    if (departments[i].GetCode() == tbxDepartmentCode.Text) {
+                }
+                else
+                {
+                    if (departments[i].GetCode() == tbxDepartmentCode.Text)
+                    {
                         MessageBox.Show("중복 학과코드");
                         tbxDepartmentCode.Focus();
                         return;
@@ -237,7 +251,8 @@ namespace Week09Homework
                 }
             }
 
-            if (index < 0) {
+            if (index < 0)
+            {
                 MessageBox.Show("신규 학과를 개설할 수 없습니다.");
                 return;
             }
@@ -249,17 +264,19 @@ namespace Week09Homework
             lbxDepartment.Items.Add(dept);
 
             SaveInfo(dept, DepartmentFullFileName);
-            
+
         }
 
         private void btnRemoveDepartment_Click(object sender, EventArgs e)
         {
-            if (lbxDepartment.SelectedIndex < 0) {
+            if (lbxDepartment.SelectedIndex < 0)
+            {
                 MessageBox.Show("삭제할 학과를 선택");
                 return;
             }
 
-            if (lbxDepartment.SelectedItem is Department) {
+            if (lbxDepartment.SelectedItem is Department)
+            {
                 var target = (Department)lbxDepartment.SelectedItem;
 
                 foreach (var prof in professors)
@@ -281,8 +298,10 @@ namespace Week09Homework
 
                 //var stuList = students.Select(m => m.Value.Dept.Code).Where(m => m == target.Code).ToList();
 
-                for (int i = 0; i < departments.Length; i++) {
-                    if (departments[i] != null && departments[i] == target) {
+                for (int i = 0; i < departments.Length; i++)
+                {
+                    if (departments[i] != null && departments[i] == target)
+                    {
                         departments[i] = null;
                         break;
                     }
@@ -292,13 +311,20 @@ namespace Week09Homework
                 lbxDepartment.SelectedIndex = -1;
 
 
-                try {
+                try
+                {
                     DeleteInfo(departments, DepartmentFullFileName);
-                } catch (NullReferenceException ex) {
+                }
+                catch (NullReferenceException ex)
+                {
                     Console.WriteLine("배열이 비었나봐" + ex.Message);
-                } catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     Console.WriteLine(ex);
-                } finally {
+                }
+                finally
+                {
                     Console.WriteLine("파일삭제 처리 끝");
                 }
             }
@@ -320,13 +346,16 @@ namespace Week09Homework
 
         private void tabMain_SelectedIndexChanged(object sender, EventArgs e)
         {
-            switch (tabMain.SelectedIndex) {
+            switch (tabMain.SelectedIndex)
+            {
                 case 0:
                     break;
                 case 1:
                     cmbProfessorDepartment.Items.Clear();
-                    foreach (var department in departments) {
-                        if (department != null) {
+                    foreach (var department in departments)
+                    {
+                        if (department != null)
+                        {
                             cmbProfessorDepartment.Items.Add(department);
                         }
                     }
@@ -336,8 +365,10 @@ namespace Week09Homework
                     break;
                 case 2:
                     cmbDepartment.Items.Clear();
-                    foreach (var department in departments) {
-                        if (department != null) {
+                    foreach (var department in departments)
+                    {
+                        if (department != null)
+                        {
                             cmbDepartment.Items.Add(department);
                         }
                     }
@@ -356,14 +387,16 @@ namespace Week09Homework
         {
             lblTestName.Text = string.Empty;
 
-            foreach (var textbox in tbxTestScores) {
+            foreach (var textbox in tbxTestScores)
+            {
                 textbox.Text = string.Empty;
             }
         }
 
         private void cmbProfessorDepartment_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmbProfessorDepartment.SelectedIndex < 0) {
+            if (cmbProfessorDepartment.SelectedIndex < 0)
+            {
                 return;
             }
 
@@ -371,9 +404,12 @@ namespace Week09Homework
 
             var department = cmbProfessorDepartment.SelectedItem as Department;
 
-            if (department != null) {
-                foreach (var professor in professors) {
-                    if (professor != null && professor.Dept.Code == department.Code) {
+            if (department != null)
+            {
+                foreach (var professor in professors)
+                {
+                    if (professor != null && professor.Dept.Code == department.Code)
+                    {
                         lbxProfessor.Items.Add(professor);
                     }
                 }
@@ -382,32 +418,38 @@ namespace Week09Homework
 
         private void btnRegisterProfessor_Click(object sender, EventArgs e)
         {
-            if (cmbProfessorDepartment.SelectedIndex < 0) {
+            if (cmbProfessorDepartment.SelectedIndex < 0)
+            {
                 MessageBox.Show("학과를 선택");
                 cmbProfessorDepartment.Focus();
                 return;
             }
 
-            if (false == cmbProfessorDepartment.SelectedItem is Department dept) {
+            if (false == cmbProfessorDepartment.SelectedItem is Department dept)
+            {
                 MessageBox.Show("학과정보에 이상 발생");
                 cmbProfessorDepartment.Focus();
                 return;
             }
 
-            if (string.IsNullOrEmpty(tbxProfessorNumber.Text)) {
+            if (string.IsNullOrEmpty(tbxProfessorNumber.Text))
+            {
                 MessageBox.Show("교수번호 입력");
                 tbxProfessorNumber.Focus();
                 return;
             }
 
-            if (string.IsNullOrEmpty(tbxProfessorName.Text)) {
+            if (string.IsNullOrEmpty(tbxProfessorName.Text))
+            {
                 MessageBox.Show("교수이름 입력");
                 tbxProfessorName.Focus();
                 return;
             }
 
-            for (int i = 0; i < professors.Count; i++) {
-                if (professors[i].Number == tbxProfessorNumber.Text) {
+            for (int i = 0; i < professors.Count; i++)
+            {
+                if (professors[i].Number == tbxProfessorNumber.Text)
+                {
                     MessageBox.Show("중복 교수코드");
                     tbxProfessorNumber.Focus();
                     return;
@@ -442,12 +484,14 @@ namespace Week09Homework
 
         private void btnRemoveProfessor_Click(object sender, EventArgs e)
         {
-            if (lbxProfessor.SelectedIndex < 0) {
+            if (lbxProfessor.SelectedIndex < 0)
+            {
                 MessageBox.Show("삭제할 교수를 선택");
                 return;
             }
 
-            if (lbxProfessor.SelectedItem is Professor) {
+            if (lbxProfessor.SelectedItem is Professor)
+            {
                 var target = (Professor)lbxProfessor.SelectedItem;
 
                 foreach (var stu in students)
@@ -459,8 +503,10 @@ namespace Week09Homework
                     }
                 }
 
-                for (int i = 0; i < professors.Count; i++) {
-                    if (professors[i] != null && professors[i] == target) {
+                for (int i = 0; i < professors.Count; i++)
+                {
+                    if (professors[i] != null && professors[i] == target)
+                    {
                         professors.RemoveAt(i);
                         break;
                     }
@@ -491,16 +537,20 @@ namespace Week09Homework
         {
             cmbAdvisor.Items.Clear();
 
-            if (cmbDepartment.SelectedIndex < 0) {
+            if (cmbDepartment.SelectedIndex < 0)
+            {
                 return;
             }
 
-            if (false == cmbDepartment.SelectedItem is Department dept) {
+            if (false == cmbDepartment.SelectedItem is Department dept)
+            {
                 return;
             }
 
-            foreach (var professor in professors) {
-                if (professor != null && professor.Dept.Code == dept.Code) {
+            foreach (var professor in professors)
+            {
+                if (professor != null && professor.Dept.Code == dept.Code)
+                {
                     cmbAdvisor.Items.Add(professor);
                 }
             }
@@ -537,9 +587,12 @@ namespace Week09Homework
         Student selectedStudent = null;
         private void btnRegister_Click(object sender, EventArgs e)
         {
-            if (selectedStudent == null) {
+            if (selectedStudent == null)
+            {
                 RegisterStudent();
-            } else {
+            }
+            else
+            {
                 UpdateStudent();          //call
             }
         }
@@ -548,35 +601,42 @@ namespace Week09Homework
         {
             var number = tbxNumber.Text.Trim();
 
-            if (string.IsNullOrEmpty(number) || number.Length != 8) {
+            if (string.IsNullOrEmpty(number) || number.Length != 8)
+            {
                 tbxNumber.Focus();
                 return;
             }
 
-            if (string.IsNullOrEmpty(tbxName.Text) || tbxName.Text.Trim().Length < 2) {
+            if (string.IsNullOrEmpty(tbxName.Text) || tbxName.Text.Trim().Length < 2)
+            {
                 tbxName.Focus();
                 return;
             }
 
             //for, 성능 떨어짐
-            for (int i = 0; i < students.Count; i++) {
+            for (int i = 0; i < students.Count; i++)
+            {
                 var pair = students.ElementAt(i);
-                if (pair.Key == number) {
+                if (pair.Key == number)
+                {
                     tbxNumber.Focus();
                     return;
                 }
             }
 
             //foreach
-            foreach (var pair in students) {
-                if (pair.Key == number) {
+            foreach (var pair in students)
+            {
+                if (pair.Key == number)
+                {
                     tbxNumber.Focus();
                     return;
                 }
             }
 
             //실제 많이 사용하는 방법1
-            if (true == students.ContainsKey(number)) {
+            if (true == students.ContainsKey(number))
+            {
                 tbxNumber.Focus();
                 return;
             }
@@ -584,62 +644,83 @@ namespace Week09Homework
             Student student = new Student(number, tbxName.Text.Trim());
 
             int birthYear, birthMonth;// birthDay;
-            if (true == int.TryParse(tbxBirthYear.Text, out birthYear)) {
-                if (birthYear < 1900 || 9000 < birthYear) {
+            if (true == int.TryParse(tbxBirthYear.Text, out birthYear))
+            {
+                if (birthYear < 1900 || 9000 < birthYear)
+                {
                     tbxBirthYear.Focus();
                     return;
                 }
-            } else {
+            }
+            else
+            {
                 tbxBirthYear.Focus();
                 return;
             }
 
-            if (true == int.TryParse(tbxBirthMonth.Text, out birthMonth)) {
-                if (birthMonth < 1 || 12 < birthMonth) {
+            if (true == int.TryParse(tbxBirthMonth.Text, out birthMonth))
+            {
+                if (birthMonth < 1 || 12 < birthMonth)
+                {
                     tbxBirthMonth.Focus();
                     return;
                 }
-            } else {
+            }
+            else
+            {
                 tbxBirthMonth.Focus();
                 return;
             }
 
-            if (true == int.TryParse(tbxBirthDay.Text, out int birthDay)) {
+            if (true == int.TryParse(tbxBirthDay.Text, out int birthDay))
+            {
                 //2월, 달 처리등은 추후 해볼것
-                if (birthDay < 0 || 31 < birthDay) {
+                if (birthDay < 0 || 31 < birthDay)
+                {
                     tbxBirthDay.Focus();
                     return;
                 }
-            } else {
+            }
+            else
+            {
                 tbxBirthDay.Focus();
                 return;
             }
 
             student.SetBirthInfo(birthYear, birthMonth, birthDay);
 
-            if (cmbDepartment.SelectedIndex < 0) {
+            if (cmbDepartment.SelectedIndex < 0)
+            {
                 student.Dept = null;
-            } else {
+            }
+            else
+            {
                 student.Dept = (cmbDepartment.SelectedItem as Department);
             }
 
-            if (cmbAdvisor.SelectedIndex < 0) {
+            if (cmbAdvisor.SelectedIndex < 0)
+            {
                 student.Advisor = null;
-            } else {
+            }
+            else
+            {
                 student.Advisor = (cmbAdvisor.SelectedItem as Professor);
             }
 
-            if (cmbYear.SelectedIndex < (int)YEAR.END) {
+            if (cmbYear.SelectedIndex < (int)YEAR.END)
+            {
                 student.Year = (YEAR)cmbYear.SelectedIndex;
             }
 
-            if (cmbClass.SelectedIndex < 0) {
+            if (cmbClass.SelectedIndex < 0)
+            {
                 cmbClass.Focus();
                 return;
             }
             student.Class = (CLASS)cmbClass.SelectedIndex;
 
-            if (cmbRegStatus.SelectedIndex < 0) {
+            if (cmbRegStatus.SelectedIndex < 0)
+            {
                 cmbRegStatus.Focus();
                 return;
             }
@@ -656,79 +737,103 @@ namespace Week09Homework
 
         private void UpdateStudent()
         {
-            if (string.IsNullOrEmpty(tbxName.Text) || tbxName.Text.Trim().Length < 2) {
+            if (string.IsNullOrEmpty(tbxName.Text) || tbxName.Text.Trim().Length < 2)
+            {
                 tbxName.Focus();
                 return;
             }
 
-            if (true == int.TryParse(tbxBirthYear.Text, out int birthYear)) {
-                if (birthYear < 1900 || 9000 < birthYear) {
+            if (true == int.TryParse(tbxBirthYear.Text, out int birthYear))
+            {
+                if (birthYear < 1900 || 9000 < birthYear)
+                {
                     tbxBirthYear.Focus();
                     return;
                 }
-            } else {
+            }
+            else
+            {
                 tbxBirthYear.Focus();
                 return;
             }
 
 
-            if (true == int.TryParse(tbxBirthMonth.Text, out int birthMonth)) {
-                if (birthMonth < 1 || 12 < birthMonth) {
+            if (true == int.TryParse(tbxBirthMonth.Text, out int birthMonth))
+            {
+                if (birthMonth < 1 || 12 < birthMonth)
+                {
                     tbxBirthMonth.Focus();
                     return;
                 }
-            } else {
+            }
+            else
+            {
                 tbxBirthMonth.Focus();
                 return;
             }
 
-            if (true == int.TryParse(tbxBirthDay.Text, out int birthDay)) {
+            if (true == int.TryParse(tbxBirthDay.Text, out int birthDay))
+            {
                 //2월, 달 처리등은 추후 해볼것
-                if (birthDay < 0 || 31 < birthDay) {
+                if (birthDay < 0 || 31 < birthDay)
+                {
                     tbxBirthDay.Focus();
                     return;
                 }
-            } else {
+            }
+            else
+            {
                 tbxBirthDay.Focus();
                 return;
             }
 
-            if (cmbDepartment.SelectedIndex < 0) {
+            if (cmbDepartment.SelectedIndex < 0)
+            {
                 //cmbDepartment.Focus();
                 return;
             }
 
-            if (cmbYear.SelectedIndex < 0) {
+            if (cmbYear.SelectedIndex < 0)
+            {
                 cmbYear.Focus();
                 return;
             }
 
-            if (false == int.TryParse(cmbYear.SelectedItem.ToString(), out int year)) {
+            if (false == int.TryParse(cmbYear.SelectedItem.ToString(), out int year))
+            {
                 cmbYear.Focus();
                 return;
             }
 
-            if (cmbClass.SelectedIndex < 0) {
+            if (cmbClass.SelectedIndex < 0)
+            {
                 cmbClass.Focus();
                 return;
             }
 
-            if (cmbRegStatus.SelectedIndex < 0) {
+            if (cmbRegStatus.SelectedIndex < 0)
+            {
                 cmbRegStatus.Focus();
                 return;
             }
 
             selectedStudent.SetBirthInfo(birthYear, birthMonth, birthDay);
 
-            if (cmbDepartment.SelectedIndex < 0) {
+            if (cmbDepartment.SelectedIndex < 0)
+            {
                 selectedStudent.Dept = null;
-            } else {
+            }
+            else
+            {
                 selectedStudent.Dept = (cmbDepartment.SelectedItem as Department);
             }
 
-            if (cmbAdvisor.SelectedIndex < 0) {
+            if (cmbAdvisor.SelectedIndex < 0)
+            {
                 selectedStudent.Advisor = null;
-            } else {
+            }
+            else
+            {
                 selectedStudent.Advisor = (cmbAdvisor.SelectedItem as Professor);
             }
 
@@ -761,7 +866,8 @@ namespace Week09Homework
 
         private void lbxDictionary_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (lbxDictionary.SelectedIndex < 0) {
+            if (lbxDictionary.SelectedIndex < 0)
+            {
                 return;
             }
 
@@ -769,7 +875,8 @@ namespace Week09Homework
 
             ClearStudentInfo();
 
-            if (student != null) {
+            if (student != null)
+            {
                 DisplaySelectedStudent(student);
             }
         }
@@ -785,36 +892,46 @@ namespace Week09Homework
             tbxBirthMonth.Text = student.BirthInfo.Month.ToString();
             tbxBirthDay.Text = student.BirthInfo.Day.ToString();
 
-            for (int i = 0; i < cmbDepartment.Items.Count; i++) {
-                if ((cmbDepartment.Items[i] as Department).Code == student.Dept.Code) {
+            for (int i = 0; i < cmbDepartment.Items.Count; i++)
+            {
+                if ((cmbDepartment.Items[i] as Department).Code == student.Dept.Code)
+                {
                     cmbDepartment.SelectedIndex = i;
                     break;
                 }
             }
 
-            for (int i = 0; i < cmbAdvisor.Items.Count; i++) {
-                if ((cmbAdvisor.Items[i] as Professor) == student.Advisor) {
+            for (int i = 0; i < cmbAdvisor.Items.Count; i++)
+            {
+                if ((cmbAdvisor.Items[i] as Professor) == student.Advisor)
+                {
                     cmbAdvisor.SelectedIndex = i;
                     break;
                 }
             }
 
-            for (int i = 0; i < cmbYear.Items.Count; i++) {
-                if (cmbYear.Items[i].ToString() == student.Year.ToString()) {
+            for (int i = 0; i < cmbYear.Items.Count; i++)
+            {
+                if (cmbYear.Items[i].ToString() == student.Year.ToString())
+                {
                     cmbYear.SelectedIndex = i;
                     break;
                 }
             }
 
-            for (int i = 0; i < cmbClass.Items.Count; i++) {
-                if (i == (int)student.Class) {
+            for (int i = 0; i < cmbClass.Items.Count; i++)
+            {
+                if (i == (int)student.Class)
+                {
                     cmbClass.SelectedIndex = i;
                     break;
                 }
             }
 
-            for (int i = 0; i < cmbRegStatus.Items.Count; i++) {
-                if (i == (int)student.RegStatus) {
+            for (int i = 0; i < cmbRegStatus.Items.Count; i++)
+            {
+                if (i == (int)student.RegStatus)
+                {
                     cmbRegStatus.SelectedIndex = i;
                     break;
                 }
@@ -831,14 +948,16 @@ namespace Week09Homework
             ClearTestScoreInfo();
 
             var number = tbxTestNumber.Text.Trim();
-            if (string.IsNullOrEmpty(number) || number.Length != 8) {
+            if (string.IsNullOrEmpty(number) || number.Length != 8)
+            {
                 tbxNumber.Focus();
                 return;
             }
 
             selectedStudent = SearchStudentByNumber(tbxTestNumber.Text);
 
-            if (selectedStudent == null) {
+            if (selectedStudent == null)
+            {
                 MessageBox.Show($"{number}학번의 학생 정보가 없음");
                 tbxTestNumber.Focus();
                 return;
@@ -848,8 +967,10 @@ namespace Week09Homework
 
             Grade grade = SearchGradeByNumber(selectedStudent.Number);
 
-            if (grade != null) {
-                for (int i = 0; i < grade.Count() && i < tbxTestScores.Length; i++) {
+            if (grade != null)
+            {
+                for (int i = 0; i < grade.Count() && i < tbxTestScores.Length; i++)
+                {
                     tbxTestScores[i].Text = grade.Get(i).ToString("0.0");
                 }
             }
@@ -857,8 +978,10 @@ namespace Week09Homework
 
         Grade SearchGradeByNumber(string number)
         {
-            foreach (Grade grade in testGrades) {
-                if (grade.StudentNumber == number) {
+            foreach (Grade grade in testGrades)
+            {
+                if (grade.StudentNumber == number)
+                {
                     return grade;
                 }
             }
@@ -868,9 +991,12 @@ namespace Week09Homework
 
         private Student SearchStudentByNumber(string number)
         {
-            if (students.ContainsKey(number)) {
+            if (students.ContainsKey(number))
+            {
                 return students[number];
-            } else {
+            }
+            else
+            {
                 return null;
             }
         }
@@ -881,13 +1007,16 @@ namespace Week09Homework
             lblTestTotalCount.Text = "";
             lblTestAverage.Text = "";
 
-            if (selectedStudent == null) {
+            if (selectedStudent == null)
+            {
                 tbxTestNumber.Focus();
                 return;
             }
 
-            for (int i = 1; i < tbxTestScores.Length; i++) {
-                if (true == string.IsNullOrEmpty(tbxTestScores[i - 1].Text) && false == string.IsNullOrEmpty(tbxTestScores[i].Text)) {
+            for (int i = 1; i < tbxTestScores.Length; i++)
+            {
+                if (true == string.IsNullOrEmpty(tbxTestScores[i - 1].Text) && false == string.IsNullOrEmpty(tbxTestScores[i].Text))
+                {
                     tbxTestScores[i - 1].Focus();
                     return;
                 }
@@ -895,20 +1024,24 @@ namespace Week09Homework
 
             var grade = SearchGradeByNumber(selectedStudent.Number);
 
-            if (grade == null) {
+            if (grade == null)
+            {
                 grade = new Grade(selectedStudent.Number);
             }
 
             grade.Clear();
 
             double temp;
-            for (int i = 0; i < tbxTestScores.Length; i++) {
-                if (string.IsNullOrEmpty(tbxTestScores[i].Text)) {
+            for (int i = 0; i < tbxTestScores.Length; i++)
+            {
+                if (string.IsNullOrEmpty(tbxTestScores[i].Text))
+                {
                     break;
                 }
 
                 if (false == double.TryParse(
-                    tbxTestScores[i].Text, out temp)) {
+                    tbxTestScores[i].Text, out temp))
+                {
                     tbxTestScores[i].Focus();
                     return;
                 }
